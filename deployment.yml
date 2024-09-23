@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devopsedu-employee-deploy
+  labels:
+    app: devopsedu-employee-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: devopsedu-employee-app
+  template:
+    metadata:
+      labels:
+        app: devopsedu-employee-app
+    spec:
+      containers:
+      - name: devopsedu-employee-container
+        image: loksaieta/devopsedu-employee-app
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: devopsedu-employee-np-service
+  labels:
+    app: devopsedu-employee-app
+spec:
+  selector:
+    app: devopsedu-employee-app
+
+  type: NodePort
+  ports:
+  - nodePort: 31028
+    port: 8080
+    targetPort: 8080
